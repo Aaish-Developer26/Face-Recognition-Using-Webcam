@@ -5,7 +5,7 @@ import mediapipe as mp
 
 # Initialize MediaPipe face detection
 mp_face_detection = mp.solutions.face_detection
-mp_drawing = mp.solutions.drawing_utilsq
+mp_drawing = mp.solutions.drawing_utils
 
 # Load known faces and names
 known_face_encodings = []
@@ -18,7 +18,7 @@ for filename in os.listdir(known_faces_dir):
     image = face_recognition.load_image_file(filepath)
     encoding = face_recognition.face_encodings(image)[0]
     known_face_encodings.append(encoding)
-    known_face_names.append(os.path.splitext(filename)[0])  # Use filename without exteqnsion as the name
+    known_face_names.append(os.path.splitext(filename)[0])  # Use filename without extension as the name
 
 # Initialize webcam capture
 cap = cv2.VideoCapture(0)
