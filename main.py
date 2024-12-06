@@ -14,6 +14,10 @@ known_faces_dir = "employee_faces"  # Directory to store employee images
 encoding_file = "employee_encodings.pkl"  # File to store encoded employee data
 attendance_log = "attendance_log.csv"  # File to log attendance
 
+# Add this dictionary to track attendance in the current session
+logged_employees = {}
+
+
 # Function to encode employee images
 def encode_faces():
     known_face_encodings = []
@@ -42,15 +46,21 @@ def load_encodings():
 
 # Mark attendance
 def mark_attendance(name):
+    """Mark attendance only once per session."""
     now = datetime.now()
     date_str = now.strftime("%Y-%m-%d")
     time_str = now.strftime("%H:%M:%S")
 
-    # Append attendance to the log
-    with open(attendance_log, "a") as file:
-        file.write(f"{date_str},{time_str},{name}\n")
+    # Check if the employee is already logged for the current session
+    if name not in logged_employees:
+        # Append attendance to the log file
+        with open(attendance_log, "a") as file:
+            file.write(f"{date_str},{time_str},{name}\n")
 
-    print(f"Attendance marked for {name} at {time_str} on {date_str}.")
+        logged_employees[name] = True  # Mark as logged for this session
+        print(f"Attendance marked for {name} at {time_str} on {date_str}.")
+    else:
+        print(f"{name} is already marked for this session.")
 
 # Initialize face encodings
 known_face_encodings, known_face_names = load_encodings()
